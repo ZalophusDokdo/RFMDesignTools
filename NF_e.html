@@ -1,0 +1,231 @@
+<HTML>
+
+<!-------------------------------->
+<!     Designed by Y.Ichikawa     >
+<!         Augst 10, 2004         >
+<!   Modified by Zalophus Dokdo   >
+<!       February 12, 2019        >
+<!-------------------------------->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <title>RF & Microwave Design Tools | Noise Figure</title>
+        <meta name="description" content="RF & Microwave Design Tools Compact android mobile application">
+        <link href="css/bootstrap.united.min.css" rel="stylesheet">
+        <link href="css/site.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+    </head>
+
+<BODY BGCOLOR="#111111" TEXT="#FFFFFF">
+
+<SCRIPT LANGUAGE="JavaScript">
+
+   function cal(f){
+     
+      n1 = eval(f.n1.value);
+      n2 = eval(f.n2.value);
+      n3 = eval(f.n3.value);
+      n4 = eval(f.n4.value);
+      n5 = eval(f.n5.value);
+      g1 = eval(f.g1.value);
+      g2 = eval(f.g2.value);
+      g3 = eval(f.g3.value);
+      g4 = eval(f.g4.value);
+      g5 = eval(f.g5.value);
+
+      if (n1<0 || f.n1.value==""){
+          n1 = 0;
+          f.n1.value = n1;
+      }
+      if (n2<0 || f.n2.value==""){
+          n2 = 0;
+          f.n2.value = n2;
+      }
+      if (n3<0 || f.n3.value==""){
+          n3 = 0;
+          f.n3.value = n3;
+      }
+      if (n4<0 || f.n4.value==""){
+          n4 = 0;
+          f.n4.value = n4;
+      }
+      if (n5<0 || f.n5.value==""){
+          n5 = 0;
+          f.n5.value = n5;
+      }
+      if (f.g1.value==""){
+          g1 = 0;
+          f.g1.value = g1;
+      }
+      if (f.g2.value==""){
+          g2 = 0;
+          f.g2.value = g2;
+      }
+      if (f.g3.value==""){
+          g3 = 0;
+          f.g3.value = g3;
+      }
+      if (f.g4.value==""){
+          g4 = 0;
+          f.g4.value = g4;
+      }
+      if (f.g5.value==""){
+          g5 = 0;
+          f.g5.value = g5;
+      }
+
+      nf1 = Math.pow(10,(n1/10));
+      nf2 = Math.pow(10,(n2/10));
+      nf3 = Math.pow(10,(n3/10));
+      nf4 = Math.pow(10,(n4/10));
+      nf5 = Math.pow(10,(n5/10));
+      ga1 = Math.pow(10,(g1/10));
+      ga2 = Math.pow(10,(g2/10));
+      ga3 = Math.pow(10,(g3/10));
+      ga4 = Math.pow(10,(g4/10));
+      ga5 = Math.pow(10,(g5/10));
+
+      nf  = nf1+(nf2-1)/ga1+(nf3-1)/(ga1*ga2)+(nf4-1)/(ga1*ga2*ga3)+(nf5-1)/(ga1*ga2*ga3*ga4);
+      g  = g1+g2+g3+g4+g5;
+ 
+      nf = 10*Math.log(nf)/Math.log(10);
+      nf = Math.round(nf*1000)/1000;
+    
+      f.nf.value = nf;
+      f.gain.value = g;     
+   }
+
+</SCRIPT>
+
+        <div class="wrap">
+            <div class="nav-wrap" id="siteNavigation">
+                
+            </div>
+
+            <div class="container">
+
+<CENTER>
+<FONT SIZE="5" COLOR="#FF0000">Noise Figure Calculator</FONT><BR><BR>
+<IMG width="100%" SRC="images/NF.gif"><BR>
+
+<FONT SIZE="3">
+<FORM METHOD="POST">
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><B>NF1 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="n1"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR>
+    <TD ALIGN="center"><B>Gain1 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="g1"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><B>NF2 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="n2"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR>
+    <TD ALIGN="center"><B>Gain2 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="g2"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><B>NF3 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="n3"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR>
+    <TD ALIGN="center"><B>Gain3 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="g3"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><B>NF4 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="n4"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR>
+    <TD ALIGN="center"><B>Gain4 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="g4"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><B>NF5 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="n5"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR>
+    <TD ALIGN="center"><B>Gain5 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="g5"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR>
+    <TD COLSPAN="14" ALIGN="center" VALIGN="bottom" HEIGHT="50"><INPUT TYPE="button" VALUE=" Calculate  " onClick="cal(this.form)"></TD>
+</TR>
+</TABLE>
+<BR>Input NF and Gain in [dB].<BR>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BODER=0>
+<TR>
+    <TD ALIGN="center"><B>NF</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="nf"></TD>
+    <TD>[dB]</TD>
+    <TD WIDTH="30"></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><B>Gain</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="gain"></TD>
+    <TD>[dB]</TD>
+</TR>
+</TABLE>
+</FORM>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR><TD><FONT SIZE="4"><B>[ How to use ]</B></FONT></TD></TR>
+<TR><TD>
+1.Input NF and Gain of each stage, and click on <FONT COLOR="#BB00FF"><B>[ Calculate ]</B></FONT> button.<BR><BR>
+[ Example 1 ] Input is unnecessary for 3 - 5stage in the case of the 2stage amplifier.<BR>
+[ Example 2 ] NF is to input L, Gain with -L in the case of the filter of loss L[dB].<BR>
+</TD></TR>
+</TABLE>
+</FONT>
+</CENTER>
+    </div>
+
+    <footer class="footer gutter-lg-top">
+        <div class="container">
+            <a href="privacy-policy.html" class="pull-right gutter-md-left">Privacy Policy</a>
+            <span class="pull-right"> | </span>
+            <a href="https://github.com/ZalophusDokdo/xyzcontroller" target="_blank" class="pull-right gutter-md-right"><i class="fa fa-github gutter-sm-right"></i>Github</a>
+        </div>
+    </footer>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.bootstrap-autohidingnavbar.js"></script>
+<script type="text/javascript">
+    $(function(){
+        jQuery('#siteNavigation').load('navigation.html', function(){
+            jQuery("nav.navbar-fixed-top").autoHidingNavbar({animationDuration: 250, showOnUpscroll: true, showOnBottom: false});
+            setTimeout(function(){$("li.etc").addClass('active'); $('li.etc li:eq(2)').addClass('active');}, 100);
+        });
+    });
+</script>
+</BODY>
+
+</HTML>

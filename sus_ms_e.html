@@ -1,0 +1,335 @@
+<HTML>
+
+<!-------------------------------->
+<!     Designed by Y.Ichikawa     >
+<!         Augst 10, 2004         >
+<!   Modified by Zalophus Dokdo   >
+<!       February 12, 2019        >
+<!-------------------------------->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <title>RF & Microwave Design Tools | Suspended Microstrip Line Calculator</title>
+        <meta name="description" content="RF & Microwave Design Tools Compact android mobile application">
+        <link href="css/bootstrap.united.min.css" rel="stylesheet">
+        <link href="css/site.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+    </head>
+
+<BODY BGCOLOR="#111111" TEXT="#FFFFFF">
+
+<SCRIPT LANGUAGE="JavaScript">
+
+   PI = 3.141592659;
+ 
+   function ana(f){
+     
+      e0 = eval(f.er.value);
+      a0 = eval(f.a.value);
+      b0 = eval(f.b.value);
+      f0 = eval(f.f.value);
+      w0 = eval(f.w.value);
+
+      if (e0<=0 || f.er.value==""){
+          e0 = 2.6;
+          f.er.value = e0;
+      }
+      if (a0<=0 || f.a.value==""){
+          a0 = 1;
+          f.a.value = a0;
+      }
+      if (b0<=0 || f.b.value==""){
+          b0 = 1;
+          f.b.value = b0;
+      }
+      if (f0<=0 || f.f.value==""){
+          f0 = 1000;
+          f.f.value = f0;
+      }
+      if (w0<=0 || f.w.value==""){
+          w0 = 1;
+          f.w.value = w0;
+      }
+
+      u  = w0/(a0+b0);
+      k1 = Math.pow((30.666/u),0.7528);
+      k2 = Math.exp(-k1);
+      fu = 6+(2*PI-6)*k2;
+      k3 = a0/b0;
+      k4 = Math.log(k3);
+      k5 = 0.8621-0.1251*k4;
+      k6 = 0.4986-0.1397*k4;
+      a1 = Math.pow(k5,4);
+      b1 = Math.pow(k6,4);
+      k7 = Math.sqrt(e0);
+      k8 = k3*(a1-b1*Math.log(w0/b0))*(1/k7-1);
+      ef2= 1/(1+k8);
+      ef = ef2*ef2;
+
+      k9 = Math.sqrt(1+4/(u*u));
+      k10= Math.log(fu/u+k9);
+
+      zz = 60*k10/ef2;
+      
+      f.Z0.value = zz;      
+      f.ef.value = ef;
+      k  = 1/ef2;
+      f.k.value = k;
+      l4 = 30*1e10*k/(f0*1e6*4);
+      f.l4.value = l4;
+
+   }
+
+   function syn(f){
+     
+      e0 = eval(f.er.value);
+      a0 = eval(f.a.value);
+      b0 = eval(f.b.value);
+      f0 = eval(f.f.value);
+      z0 = eval(f.z.value);
+      w0 = 1;
+      ww = 0.5;
+      ee = 1;
+      n  = 0;
+    
+      if (e0<=0 || f.er.value==""){
+          e0 = 2.6;
+          f.er.value = e0;
+      }
+      if (a0<=0 || f.a.value==""){
+          a0 = 1;
+          f.a.value = a0;
+      }
+      if (b0<=0 || f.b.value==""){
+          b0 = 1;
+          f.b.value = b0;
+      }
+      if (f0<=0 || f.f.value==""){
+          f0 = 1000;
+          f.f.value = f0;
+      }
+      if (z0<=0 || f.z.value==""){
+          z0 = 50;
+          f.z.value = z0;
+      }
+
+    while (ee>0.001){
+
+      u  = w0/(a0+b0);
+      k1 = Math.pow((30.666/u),0.7528);
+      k2 = Math.exp(-k1);
+      fu = 6+(2*PI-6)*k2;
+      k3 = a0/b0;
+      k4 = Math.log(k3);
+      k5 = 0.8621-0.1251*k4;
+      k6 = 0.4986-0.1397*k4;
+      a1 = Math.pow(k5,4);
+      b1 = Math.pow(k6,4);
+      k7 = Math.sqrt(e0);
+      k8 = k3*(a1-b1*Math.log(w0/b0))*(1/k7-1);
+      ef2= 1/(1+k8);
+      ef = ef2*ef2;
+
+      k9 = Math.sqrt(1+4/(u*u));
+      k10= Math.log(fu/u+k9);
+
+      zz = 60*k10/ef2;
+      
+      err= zz-z0;
+      ee = Math.abs(err);
+
+      if (n==0){
+           n = 1;
+           if (err<0){
+             frg= 0; 
+           }
+           else {
+             frg= 1;
+           }
+      }
+   
+      if (err<0){  
+           if (frg==0){
+              w0 = w0-ww;
+           }
+           else {
+              frg = 0;
+              ww = ww/2;
+           }
+      }
+      else {
+           if (frg==1){
+              w0 = w0+ww;
+           }
+           else {
+              frg = 1;
+              ww = ww/2;
+           }
+      }
+    }
+
+      f.WW.value = w0;
+      f.ef.value = ef;
+      k  = 1/ef2;
+      f.k.value = k;
+      l4 = 30*1e10*k/(f0*1e6*4);
+      f.l4.value = l4;
+   }
+
+</SCRIPT>
+
+        <div class="wrap">
+            <div class="nav-wrap" id="siteNavigation">
+                
+            </div>
+
+            <div class="container">
+
+<CENTER>
+<FONT SIZE="5" COLOR="#FF0000">Suspended Microstrip Line Calculator</FONT><BR><BR>
+
+<FONT SIZE="3">
+<FORM METHOD="POST">
+<TABLE BODER=0>
+<TR>
+    <TD ROWSPAN="6"><IMG width="100%" SRC="images/sus_ms.gif"></TD>
+</TR>
+<TR>
+    <TD WIDTH="35"></TD>
+    <TD ALIGN="center"><B>er</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="er"></TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>a</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="a"></TD>
+    <TD>[mm]</TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>b</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="b"></TD>
+    <TD>[mm]</TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>t</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="t"></TD>
+    <TD>[um]</TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>f</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="f"></TD>
+    <TD>[MHz]</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><B>W</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="w"></TD>
+    <TD>[mm]   </TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD><INPUT TYPE="button" VALUE=" Analyze  " onClick="ana(this.form)"></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="4" COLOR="#0000FF"><B>Zo</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="Z0"></TD>
+    <TD>[ohm]</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><B>Zo</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="z"></TD>
+    <TD>[ohm]</TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD><INPUT TYPE="button" VALUE="Synthesis" onClick="syn(this.form)"></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="4" COLOR="#FF00FF"><B>W</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="WW"></TD>
+    <TD>[mm]</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="3" COLOR="#FF0000"><B>er eff</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="ef"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="3" COLOR="#FF0000"><B>k</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="k"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="3" COLOR="#FF0000"><B>lambda/4</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=6 NAME="l4"></TD>
+    <TD>[mm]</TD>
+</TR>
+</TABLE>
+</FORM>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR><TD><FONT SIZE="4"><B>[ How to use ]</B></FONT></TD></TR>
+<TR><TD>
+1. Input the parameter of the circuit board and center frequency.<BR>
+2. <BR>
+(1) When the characteristic impedance (Zo) of the line width (w) is calculated.<BR>
+Input w, and click on <FONT COLOR="#BB00FF"><B>[ Analyze ]</B></FONT> button.<BR>
+(2) When the line width (w) of the characteristic impedance (Zo) is calculated.<BR>
+Input Zo, and click on <FONT COLOR="#BB00FF"><B>[ Synthesis ]</B></FONT> button.<BR>
+3. A calculation result is indicated.<BR>
+</TD></TR>
+</TABLE>
+</FONT>
+</CENTER>
+    </div>
+
+    <footer class="footer gutter-lg-top">
+        <div class="container">
+            <a href="privacy-policy.html" class="pull-right gutter-md-left">Privacy Policy</a>
+            <span class="pull-right"> | </span>
+            <a href="https://github.com/ZalophusDokdo/xyzcontroller" target="_blank" class="pull-right gutter-md-right"><i class="fa fa-github gutter-sm-right"></i>Github</a>
+        </div>
+    </footer>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.bootstrap-autohidingnavbar.js"></script>
+<script type="text/javascript">
+    $(function(){
+        jQuery('#siteNavigation').load('navigation.html', function(){
+            jQuery("nav.navbar-fixed-top").autoHidingNavbar({animationDuration: 250, showOnUpscroll: true, showOnBottom: false});
+            setTimeout(function(){$("ul.navbar-right li:eq(1)").addClass('active');$('ul.transmission-line li:eq(7)').addClass('active');}, 100);
+        });
+    });
+</script>
+</BODY>
+
+</HTML>

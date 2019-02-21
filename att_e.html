@@ -1,0 +1,184 @@
+<HTML>
+
+<!-------------------------------->
+<!     Designed by Y.Ichikawa     >
+<!         Augst 10, 2004         >
+<!   Modified by Zalophus Dokdo   >
+<!       February 12, 2019        >
+<!-------------------------------->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <title>RF & Microwave Design Tools | Attenuator Calculator</title>
+        <meta name="description" content="RF & Microwave Design Tools Compact android mobile application">
+        <link href="css/bootstrap.united.min.css" rel="stylesheet">
+        <link href="css/site.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+    </head>
+
+<BODY BGCOLOR="#111111" TEXT="#FFFFFF">
+
+<SCRIPT LANGUAGE="JavaScript">
+ 
+   function cal(f){
+     
+      z  = eval(f.z.value);
+      a  = eval(f.a.value);
+
+      if (z<=0 || f.z.value==""){
+          z = 50;
+          f.z.value = z;
+      }
+      if (a<=0 || f.a.value==""){
+          a = 3;
+          f.a.value = a;
+      }
+
+      k1 = Math.pow(10,(a/10));
+      k2 = Math.sqrt(k1);
+      
+      r3 = (k1-1)*z/(2*k2);
+      r2 = 1/((k1+1)/(z*(k1-1))-1/r3);
+      r1 = r2;
+
+      rt3= 2*z*k2/(k1-1);
+      rt2= z*(k1+1)/(k1-1)-rt3;
+      rt1= rt2;
+
+      f.r1.value = r1;      
+      f.r2.value = r2;
+      f.r3.value = r3;
+      f.rt1.value = rt1;      
+      f.rt2.value = rt2;
+      f.rt3.value = rt3;
+
+   }
+
+</SCRIPT>
+
+        <div class="wrap">
+            <div class="nav-wrap" id="siteNavigation">
+                
+            </div>
+
+            <div class="container">
+
+<CENTER>
+<FONT SIZE="5" COLOR="#FF0000">Attenuator Calculator</FONT><BR><BR><BR>
+
+<FONT SIZE="3">
+<FORM METHOD="POST">
+
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><B>ATT </B></TD>
+    <TD><INPUT TYPE="text" SIZE=6 NAME="a"></TD>
+    <TD>[dB]</TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><B>Zo </B></TD>
+    <TD><INPUT TYPE="text" SIZE=6 NAME="z"></TD>
+    <TD>[ohm]</TD>
+</TR>
+</TABLE>
+<BR>
+<TABLE BORDER=0>
+<TR>
+    <TD><INPUT TYPE="button" VALUE=" Calculate  " onClick="cal(this.form)"></TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BODER=0>
+<TR>
+    <TD ROWSPAN="4"><IMG width="100%" SRC="images/att_p.gif"></TD>
+</TR>
+<TR>
+    <TD WIDTH="35"></TD>
+    <TD ALIGN="center"><B>R1 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=6 NAME="r1"></TD>
+    <TD>[ohm]</TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>R2 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=6 NAME="r2"></TD>
+    <TD>[ohm]</TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>R3 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=6 NAME="r3"></TD>
+    <TD>[ohm]</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BODER=0>
+<TR>
+    <TD ROWSPAN="4"><IMG width="100%" SRC="images/att_t.gif"></TD>
+</TR>
+<TR>
+    <TD WIDTH="35"></TD>
+    <TD ALIGN="center"><B>R1 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=6 NAME="rt1"></TD>
+    <TD>[ohm]</TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>R2 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=6 NAME="rt2"></TD>
+    <TD>[ohm]</TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>R3 </B></TD>
+    <TD><INPUT TYPE="text" SIZE=6 NAME="rt3"></TD>
+    <TD>[ohm]</TD>
+</TR>
+</TABLE>
+</FORM>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR><TD><FONT SIZE="4"><B>[ How to use ]</B></FONT></TD></TR>
+<TR><TD>
+1. Input a requirement attenuation (ATT) and a characteristic impedance (Zo),<BR>
+and click on <FONT COLOR="#BB00FF"><B>[ Calculate ]</B></FONT> button.<BR>
+2. A calculation result is indicated.<BR>
+</TD></TR>
+</TABLE>
+</FONT>
+</CENTER>
+    </div>
+
+    <footer class="footer gutter-lg-top">
+        <div class="container">
+            <a href="privacy-policy.html" class="pull-right gutter-md-left">Privacy Policy</a>
+            <span class="pull-right"> | </span>
+            <a href="https://github.com/ZalophusDokdo/xyzcontroller" target="_blank" class="pull-right gutter-md-right"><i class="fa fa-github gutter-sm-right"></i>Github</a>
+        </div>
+    </footer>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.bootstrap-autohidingnavbar.js"></script>
+<script type="text/javascript">
+    $(function(){
+        jQuery('#siteNavigation').load('navigation.html', function(){
+            jQuery("nav.navbar-fixed-top").autoHidingNavbar({animationDuration: 250, showOnUpscroll: true, showOnBottom: false});
+            setTimeout(function(){$("li.etc").addClass('active'); $('li.etc li:eq(1)').addClass('active');}, 100);
+        });
+    });
+</script>
+</BODY>
+
+</HTML>

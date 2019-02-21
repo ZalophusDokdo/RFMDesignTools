@@ -1,0 +1,278 @@
+<HTML>
+
+<!-------------------------------->
+<!     Designed by Y.Ichikawa     >
+<!         Augst 10, 2004         >
+<!   Modified by Zalophus Dokdo   >
+<!       February 12, 2019        >
+<!-------------------------------->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <title>RF & Microwave Design Tools | Coaxial Line Calculator</title>
+        <meta name="description" content="RF & Microwave Design Tools Compact android mobile application">
+        <link href="css/bootstrap.united.min.css" rel="stylesheet">
+        <link href="css/site.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+    </head>
+
+<BODY BGCOLOR="#111111" TEXT="#FFFFFF">
+
+<SCRIPT LANGUAGE="JavaScript">
+ 
+   function ana(f){
+     
+      e0 = eval(f.er.value);
+      a0 = eval(f.a.value);
+      b0 = eval(f.b.value);
+
+      if (e0<=0 || f.er.value==""){
+          e0 = 2;
+          f.er.value = e0;
+      }
+      if (a0<=0 || f.a.value==""){
+          a0 = 1;
+          f.a.value = a0;
+      }
+      if (b0<=0 || f.b.value==""){
+          b0 = 4;
+          f.b.value = b0;
+      }
+      if (b0<a0){
+          b0 = a0*2;
+          f.b.value = b0;
+      }
+
+      k1 = Math.log(b0/a0);
+      k2 = Math.sqrt(e0);
+      c  = 55.556*e0/k1;
+      l  = 200*k1;
+      z  = 60*k1/k2;
+      v  = 3e5/k2;
+      t  = 3.33*k2;
+     
+      f.Z0.value = z;
+      f.Cap.value = c;
+      f.Ind.value = l;
+      f.Vp.value = v;
+      f.Td.value = t;
+
+   }
+
+   function syn1(f){
+
+      e0 = eval(f.er.value);
+      a0 = eval(f.a.value);
+      z0 = eval(f.z.value);
+     
+      if (e0<=0 || f.er.value==""){
+          e0 = 2;
+          f.er.value = e0;
+      }
+      if (a0<=0 || f.a.value==""){
+          a0 = 1;
+          f.a.value = a0;
+      }
+
+      k2 = Math.sqrt(e0);
+      k3 = z0*k2/60;
+      b0 = a0*Math.pow(2.718281828,k3);
+      k1 = Math.log(b0/a0);
+
+      c  = 55.556*e0/k1;
+      l  = 200*k1;
+      v  = 3e5/k2;
+      t  = 3.33*k2;
+
+      f.b.value = b0;
+      f.Cap.value = c;
+      f.Ind.value = l;
+      f.Vp.value = v;
+      f.Td.value = t;
+
+   }
+
+   function syn2(f){
+
+      e0 = eval(f.er.value);
+      b0 = eval(f.b.value);
+      z0 = eval(f.z.value);
+     
+      if (e0<=0 || f.er.value==""){
+          e0 = 2;
+          f.er.value = e0;
+      }
+      if (b0<=0 || f.b.value==""){
+          b0 = 4;
+          f.b.value = b0;
+      }
+ 
+      k2 = Math.sqrt(e0);
+      k3 = z0*k2/60;
+      a0 = b0/Math.pow(2.718281828,k3);
+      k1 = Math.log(b0/a0);
+
+      c  = 55.556*e0/k1;
+      l  = 200*k1;
+      v  = 3e5/k2;
+      t  = 3.33*k2;
+
+      f.a.value = a0;
+      f.Cap.value = c;
+      f.Ind.value = l;
+      f.Vp.value = v;
+      f.Td.value = t;
+
+   }
+
+</SCRIPT>
+
+        <div class="wrap">
+            <div class="nav-wrap" id="siteNavigation">
+                
+            </div>
+
+            <div class="container">
+
+<CENTER>
+<FONT SIZE="5" COLOR="#FF0000">Coaxial Line Calculator</FONT><BR><BR>
+
+<FONT SIZE="3">
+<FORM METHOD="POST">
+<TABLE BODER=0>
+<TR>
+    <TD ROWSPAN="5"><IMG width="100%" SRC="images/cx_line.gif"></TD>
+</TR>
+<TR>
+    <TD WIDTH="35"></TD>
+    <TD ALIGN="center"><B>er</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="er"></TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>d</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="a"></TD>
+    <TD>[mm]</TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>D</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="b"></TD>
+    <TD>[mm]</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR>
+    <TD><INPUT TYPE="button" VALUE=" Analyze  " onClick="ana(this.form)"></TD>
+</TR>
+</TABLE>
+<BR>
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="4" COLOR="#0000FF"><B>Zo</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="Z0"></TD>
+    <TD>[ohm]</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><B>Zo</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="z"></TD>
+    <TD>[ohm]</TD>
+</TR>
+</TABLE>
+<BR>
+<TABLE BORDER=0>
+<TR>
+    <TD><FONT SIZE="3" COLOR="#FF00FF"><B>Input d >>> Synthesis D  :</B></FONT></TD>
+    <TD></TD>
+    <TD><INPUT TYPE="button" VALUE="Synthesis(D)" onClick="syn1(this.form)"></TD>
+</TR>
+<TR>
+    <TD><FONT SIZE="3" COLOR="#FF77FF"><B>Input D >>> Synthesis d  :</B></FONT></TD>
+    <TD></TD>
+    <TD><INPUT TYPE="button" VALUE="Synthesis(d)" onClick="syn2(this.form)"></TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="3" COLOR="#FF0000"><B>C</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="Cap"></TD>
+    <TD>[pF/m]</TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="3" COLOR="#FF0000"><B>L</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="Ind"></TD>
+    <TD>[nH/m]</TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="3" COLOR="#FF0000"><B>Vp</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="Vp"></TD>
+    <TD>[km/s]</TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="3" COLOR="#FF0000"><B>td</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="Td"></TD>
+    <TD>[ns/m]</TD>
+</TR>
+</TABLE>
+</FORM>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR><TD><FONT SIZE="4"><B>[ How to use ]</B></FONT></TD></TR>
+<TR><TD>
+1. Input dielectric constant.<BR>
+2. <BR>
+(1) When characteristic impedance (Zo) of a certain coaxial line is computed.<BR>
+Input the diameter of the inside conductor, the outside conductor, <BR>
+and click on <FONT COLOR="#BB00FF"><B> [ Analyze ] </B></FONT>button.<BR>
+(2)When the diameter of the coaxial line which has certain characteristic impedance is calculated.<BR>
+Input the diameter of either conductor, and click on <FONT COLOR="#BB00FF"><B> [ Synthsis ] </B></FONT>button.<BR>
+3. A calculation result is indicated.<BR>
+</TD></TR>
+</TABLE>
+</FONT>
+</CENTER>
+    </div>
+
+    <footer class="footer gutter-lg-top">
+        <div class="container">
+            <a href="privacy-policy.html" class="pull-right gutter-md-left">Privacy Policy</a>
+            <span class="pull-right"> | </span>
+            <a href="https://github.com/ZalophusDokdo/xyzcontroller" target="_blank" class="pull-right gutter-md-right"><i class="fa fa-github gutter-sm-right"></i>Github</a>
+        </div>
+    </footer>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.bootstrap-autohidingnavbar.js"></script>
+<script type="text/javascript">
+            $(function(){
+                jQuery('#siteNavigation').load('navigation.html', function(){
+                    jQuery("nav.navbar-fixed-top").autoHidingNavbar({animationDuration: 250, showOnUpscroll: true, showOnBottom: false});
+                    setTimeout(function(){$("ul.navbar-right li:eq(1)").addClass('active'); $('ul.transmission-line li:eq(3)').addClass('active');}, 100);
+        });
+    });
+</script>
+</BODY>
+
+</HTML>

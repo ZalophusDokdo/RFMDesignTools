@@ -1,0 +1,259 @@
+<HTML>
+
+<!-------------------------------->
+<!     Designed by Y.Ichikawa     >
+<!         Augst 10, 2004         >
+<!   Modified by Zalophus Dokdo   >
+<!       February 12, 2019        >
+<!-------------------------------->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <title>RF & Microwave Design Tools | Maximally Flat HPF</title>
+        <meta name="description" content="RF & Microwave Design Tools Compact android mobile application">
+        <link href="css/bootstrap.united.min.css" rel="stylesheet">
+        <link href="css/site.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+    </head>
+
+<BODY BGCOLOR="#111111" TEXT="#FFFFFF">
+
+<SCRIPT LANGUAGE="JavaScript">
+
+   function MakeArray(j){
+      this.length = j;
+      var i;
+      for(i=1; i<=j; i++)
+         this[i] = "";
+   }
+
+   function cal(f){
+    
+      var i;
+ 
+      n = eval(f.n.value);
+      c = eval(f.c.value);
+      z = eval(f.z.value);
+
+      if (n<1 || f.n.value==""){
+          n = 1;
+          f.n.value = n;
+      }
+      if (n>10){
+          n = 10;
+          f.n.value = n;
+      }
+      if (c<1 || f.c.value==""){
+          c = 1000;
+          f.c.value = c;
+      }
+      if (z<=0 || f.z.value==""){
+          z = 50;
+          f.z.value = z;
+      }
+
+      w = 2*Math.PI*c/1000;
+
+      var g = new MakeArray(10);
+      var s = new MakeArray(10);
+      var t = new MakeArray(10);
+      var x = new MakeArray(10);
+      var y = new MakeArray(10);
+
+      for(i=1; i<=n; i++){
+         k = (2*i-1)*Math.PI/(2*n);
+         g[i] = 2*Math.sin(k);
+         x[i] = 1000/(g[i]*z*w);
+         y[i] = z/(g[i]*w);
+         s[i] = x[i];
+         t[i] = y[i];
+      }
+      
+      f.x1.value = x[1];
+      f.y2.value = y[2];
+      f.x3.value = x[3];
+      f.y4.value = y[4];
+      f.x5.value = x[5];
+      f.y6.value = y[6];
+      f.x7.value = x[7];
+      f.y8.value = y[8];
+      f.x9.value = x[9];
+      f.y10.value = y[10];
+
+      f.t1.value = t[1];
+      f.s2.value = s[2];
+      f.t3.value = t[3];
+      f.s4.value = s[4];
+      f.t5.value = t[5];
+      f.s6.value = s[6];
+      f.t7.value = t[7];
+      f.s8.value = s[8];
+      f.t9.value = t[9];
+      f.s10.value = s[10];
+   
+   }
+
+</SCRIPT>
+
+        <div class="wrap">
+            <div class="nav-wrap" id="siteNavigation">
+                
+            </div>
+
+            <div class="container">
+
+<CENTER>
+<FONT SIZE="5" COLOR="#FF0000">Maximally Flat HPF Calculator</FONT><BR><BR>
+<IMG width="100%" SRC="images/HPF.gif"><BR><BR><BR>
+
+<FONT SIZE="3">
+<FORM METHOD="POST">
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><B>n </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="n"></TD>
+    <TD></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><B>fc </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="c"></TD>
+    <TD>[MHz]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center"><B>Zo </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="z"></TD>
+    <TD>[ohm]</TD>
+</TR>
+</TABLE>
+<BR>
+<TABLE BODER=0>
+<TR>
+    <TD><INPUT TYPE="button" VALUE=" Calculate  " onClick="cal(this.form)"></TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BODER=0>
+<TR>
+    <TD><B>Type1</B></TD>
+</TR>
+</TABLE>
+<BR>
+<TABLE BODER=0>
+<TR>
+    <TD ALIGN="right">C1</TD><TD><INPUT TYPE="text" SIZE=5 NAME="x1"></TD><TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">L1</TD><TD><INPUT TYPE="text" SIZE=5 NAME="y2"></TD><TD>[nH]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">C2</TD><TD><INPUT TYPE="text" SIZE=5 NAME="x3"></TD><TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">L2</TD><TD><INPUT TYPE="text" SIZE=5 NAME="y4"></TD><TD>[nH]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">C3</TD><TD><INPUT TYPE="text" SIZE=5 NAME="x5"></TD><TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">L3</TD><TD><INPUT TYPE="text" SIZE=5 NAME="y6"></TD><TD>[nH]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">C4</TD><TD><INPUT TYPE="text" SIZE=5 NAME="x7"></TD><TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">L4</TD><TD><INPUT TYPE="text" SIZE=5 NAME="y8"></TD><TD>[nH]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">C5</TD><TD><INPUT TYPE="text" SIZE=5 NAME="x9"></TD><TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">L5</TD><TD><INPUT TYPE="text" SIZE=5 NAME="y10"></TD><TD>[nH]</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BODER=0>
+<TR>
+    <TD><B>Type2</B></TD>
+</TR>
+</TABLE>
+<BR>
+<TABLE BODER=0>
+<TR>
+    <TD ALIGN="right">L1</TD><TD><INPUT TYPE="text" SIZE=5 NAME="t1"></TD><TD>[nH]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">C1</TD><TD><INPUT TYPE="text" SIZE=5 NAME="s2"></TD><TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">L2</TD><TD><INPUT TYPE="text" SIZE=5 NAME="t3"></TD><TD>[nH]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">C2</TD><TD><INPUT TYPE="text" SIZE=5 NAME="s4"></TD><TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">L3</TD><TD><INPUT TYPE="text" SIZE=5 NAME="t5"></TD><TD>[nH]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">C3</TD><TD><INPUT TYPE="text" SIZE=5 NAME="s6"></TD><TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">L4</TD><TD><INPUT TYPE="text" SIZE=5 NAME="t7"></TD><TD>[nH]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">C4</TD><TD><INPUT TYPE="text" SIZE=5 NAME="s8"></TD><TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">L5</TD><TD><INPUT TYPE="text" SIZE=5 NAME="t9"></TD><TD>[nH]</TD>
+</TR>
+<TR>
+    <TD ALIGN="right">C5</TD><TD><INPUT TYPE="text" SIZE=5 NAME="s10"></TD><TD>[pF]</TD>
+</TR>
+</TABLE>
+</FORM>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR><TD><FONT SIZE="4"><B>[ How to use ]</B></FONT></TD></TR>
+<TR><TD>
+1. Input element number (n), cutoff frequency (fc), characteristic impedance (Zo),<BR>
+and click on <FONT COLOR="#BB00FF"><B>[ Calculate ]</B></FONT> button.<BR>
+2. A calculation result is indicated.<BR>
+</TD></TR>
+</TABLE>
+
+</FONT>
+</CENTER>
+    </div>
+
+    <footer class="footer gutter-lg-top">
+        <div class="container">
+            <a href="privacy-policy.html" class="pull-right gutter-md-left">Privacy Policy</a>
+            <span class="pull-right"> | </span>
+            <a href="https://github.com/ZalophusDokdo/xyzcontroller" target="_blank" class="pull-right gutter-md-right"><i class="fa fa-github gutter-sm-right"></i>Github</a>
+        </div>
+    </footer>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.bootstrap-autohidingnavbar.js"></script>
+<script type="text/javascript">
+    $(function(){
+        jQuery('#siteNavigation').load('navigation.html', function(){
+            jQuery("nav.navbar-fixed-top").autoHidingNavbar({animationDuration: 250, showOnUpscroll: true, showOnBottom: false});
+            setTimeout(function(){$("li.hpf").addClass('active'); $('li.hpf li:eq(0)').addClass('active');}, 100);
+        });
+    });
+</script>
+</BODY>
+
+</HTML>

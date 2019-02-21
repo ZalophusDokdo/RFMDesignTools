@@ -1,0 +1,470 @@
+<HTML>
+
+<!-------------------------------->
+<!     Designed by Y.Ichikawa     >
+<!         Augst 10, 2004         >
+<!   Modified by Zalophus Dokdo   >
+<!       February 12, 2019        >
+<!-------------------------------->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <title>RF & Microwave Design Tools | Maximally Flat BPF</title>
+        <meta name="description" content="RF & Microwave Design Tools Compact android mobile application">
+        <link href="css/bootstrap.united.min.css" rel="stylesheet">
+        <link href="css/site.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+    </head>
+
+<BODY BGCOLOR="#111111" TEXT="#FFFFFF">
+
+<SCRIPT LANGUAGE="JavaScript">
+
+   function MakeArray(j){
+      this.length = j;
+      var i;
+      for(i=1; i<=j; i++)
+         this[i] = "";
+   }
+
+   function cal(f){
+    
+      var i;
+ 
+      n = eval(f.n.value);
+      c = eval(f.c.value);
+      bw = eval(f.bw.value);
+      z = eval(f.z.value);
+
+      if (n<1 || f.n.value==""){
+          n = 1;
+          f.n.value = n;
+      }
+      if (n>10){
+          n = 10;
+          f.n.value = n;
+      }
+      if (c<1 || f.c.value==""){
+          c = 1000;
+          f.c.value = c;
+      }
+      if (bw<1 || f.bw.value==""){
+          bw = 1;
+          f.bw.value = bw;
+      }
+      if (z<=0 || f.z.value==""){
+          z = 50;
+          f.z.value = z;
+      }
+
+      w = 2*Math.PI*c/1000;
+      wbw = 2*Math.PI*bw/1000;
+      w2 = Math.pow(w,2);
+
+      var g = new MakeArray(10);
+      var srl = new MakeArray(10);
+      var src = new MakeArray(10);
+      var shl = new MakeArray(10);
+      var shc = new MakeArray(10);
+
+      for(i=1; i<=n; i++){
+         k = (2*i-1)*Math.PI/(2*n);
+         g[i] = 2*Math.sin(k);
+         srl[i] = g[i]*z/wbw;
+         src[i] = wbw*1000/(g[i]*z*w2);
+         shl[i] = wbw*z/(g[i]*w2);
+         shc[i] = g[i]*1000/(wbw*z);
+      }
+      
+      f.x1.value = shl[1];
+      f.x2.value = srl[2];
+      f.x3.value = shl[3];
+      f.x4.value = srl[4];
+      f.x5.value = shl[5];
+      f.x6.value = srl[6];
+      f.x7.value = shl[7];
+      f.x8.value = srl[8];
+      f.x9.value = shl[9];
+      f.x10.value = srl[10];
+
+      f.x11.value = shc[1];
+      f.x12.value = src[2];
+      f.x13.value = shc[3];
+      f.x14.value = src[4];
+      f.x15.value = shc[5];
+      f.x16.value = src[6];
+      f.x17.value = shc[7];
+      f.x18.value = src[8];
+      f.x19.value = shc[9];
+      f.x20.value = src[10];
+
+      f.y1.value = srl[1];
+      f.y2.value = shl[2];
+      f.y3.value = srl[3];
+      f.y4.value = shl[4];
+      f.y5.value = srl[5];
+      f.y6.value = shl[6];
+      f.y7.value = srl[7];
+      f.y8.value = shl[8];
+      f.y9.value = srl[9];
+      f.y10.value = shl[10];
+
+      f.y11.value = src[1];
+      f.y12.value = shc[2];
+      f.y13.value = src[3];
+      f.y14.value = shc[4];
+      f.y15.value = src[5];
+      f.y16.value = shc[6];
+      f.y17.value = src[7];
+      f.y18.value = shc[8];
+      f.y19.value = src[9];
+      f.y20.value = shc[10];    
+   }
+
+</SCRIPT>
+
+        <div class="wrap">
+            <div class="nav-wrap" id="siteNavigation">
+                
+            </div>
+
+            <div class="container">
+
+<CENTER>
+<FONT SIZE="5" COLOR="#FF0000">Maximally Flat BPF Calculator</FONT><BR><BR>
+<IMG width="100%" SRC="images/BPF.gif"><BR><BR><BR>
+
+<FONT SIZE="3">
+<FORM METHOD="POST">
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><B>n</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="n"></TD>
+    <TD></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><B>fo</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="c"></TD>
+    <TD>[MHz]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center"><B>BW</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="bw"></TD>
+    <TD>[MHz]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center"><B>Zo</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="z"></TD>
+    <TD>[ohm]</TD>
+</TR>
+</TABLE>
+<BR>
+<TABLE BODER=0>
+<TR>
+    <TD><INPUT TYPE="button" VALUE=" Calculate  " onClick="cal(this.form)"></TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BODER=0>
+<TR>
+    <TD ALIGN="center"><B>Type1</B></TD>
+</TR>
+</TABLE>
+<TABLE BODER=0>
+<TR>
+    <TD ALIGN="center">L1</TD>
+    <TD></TD>
+    <TD ALIGN="center">C1</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x1"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x11"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L2</TD>
+    <TD></TD>
+    <TD ALIGN="center">C2</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x2"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x12"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L3</TD>
+    <TD></TD>
+    <TD ALIGN="center">C3</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x3"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x13"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L4</TD>
+    <TD></TD>
+    <TD ALIGN="center">C4</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x4"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x14"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L5</TD>
+    <TD></TD>
+    <TD ALIGN="center">C5</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x5"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x15"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L6</TD>
+    <TD></TD>
+    <TD ALIGN="center">C6</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x6"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x16"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L7</TD>
+    <TD></TD>
+    <TD ALIGN="center">C7</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x7"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x17"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L8</TD>
+    <TD></TD>
+    <TD ALIGN="center">C8</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x8"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x18"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L9</TD>
+    <TD></TD>
+    <TD ALIGN="center">C9</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x9"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x19"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L10</TD>
+    <TD></TD>
+    <TD ALIGN="center">C10</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x10"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x20"></TD>
+    <TD>[pF]</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BODER=0>
+<TR>
+    <TD ALIGN="center"><B>Type2</B></TD>
+</TR>
+</TABLE>
+<TABLE BODER=0>
+<TR>
+    <TD ALIGN="center">L1</TD>
+    <TD></TD>
+    <TD ALIGN="center">C1</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y1"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y11"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L2</TD>
+    <TD></TD>
+    <TD ALIGN="center">C2</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y2"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y12"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L3</TD>
+    <TD></TD>
+    <TD ALIGN="center">C3</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y3"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y13"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L4</TD>
+    <TD></TD>
+    <TD ALIGN="center">C4</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y4"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y14"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L5</TD>
+    <TD></TD>
+    <TD ALIGN="center">C5</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y5"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y15"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L6</TD>
+    <TD></TD>
+    <TD ALIGN="center">C6</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y6"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y16"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L7</TD>
+    <TD></TD>
+    <TD ALIGN="center">C7</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y7"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y17"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L8</TD>
+    <TD></TD>
+    <TD ALIGN="center">C8</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y8"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y18"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L9</TD>
+    <TD></TD>
+    <TD ALIGN="center">C9</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y9"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y19"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR>
+    <TD ALIGN="center">L10</TD>
+    <TD></TD>
+    <TD ALIGN="center">C10</TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y10"></TD>
+    <TD>[nH]</TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y20"></TD>
+    <TD>[pF]</TD>
+</TR>
+</TABLE>
+</FORM>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR><TD><FONT SIZE="4"><B>[ How to use ]</B></FONT></TD></TR>
+<TR><TD>
+1. Input resonant circuit number (n), center frequency (fc), bandwidth (BW), <BR>
+characteristic impedance (Zo), and click on <FONT COLOR="#BB00FF"><B>[ Calculate ]</B></FONT> button.<BR>
+2. A calculation result is indicated.<BR>
+</TD></TR>
+</TABLE>
+
+</FONT>
+</CENTER>
+    </div>
+
+    <footer class="footer gutter-lg-top">
+        <div class="container">
+            <a href="privacy-policy.html" class="pull-right gutter-md-left">Privacy Policy</a>
+            <span class="pull-right"> | </span>
+            <a href="https://github.com/ZalophusDokdo/xyzcontroller" target="_blank" class="pull-right gutter-md-right"><i class="fa fa-github gutter-sm-right"></i>Github</a>
+        </div>
+    </footer>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.bootstrap-autohidingnavbar.js"></script>
+<script type="text/javascript">
+    $(function(){
+        jQuery('#siteNavigation').load('navigation.html', function(){
+            jQuery("nav.navbar-fixed-top").autoHidingNavbar({animationDuration: 250, showOnUpscroll: true, showOnBottom: false});
+            setTimeout(function(){$("li.bpf").addClass('active'); $('li.bpf li:eq(0)').addClass('active');}, 100);
+        });
+    });
+</script>
+</BODY>
+
+</HTML>

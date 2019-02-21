@@ -1,0 +1,363 @@
+<HTML>
+
+<!-------------------------------->
+<!     Designed by Y.Ichikawa     >
+<!         Augst 10, 2004         >
+<!   Modified by Zalophus Dokdo   >
+<!       February 12, 2019        >
+<!-------------------------------->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <title>RF & Microwave Design Tools | Coplanar Strips Calculator</title>
+        <meta name="description" content="RF & Microwave Design Tools Compact android mobile application">
+        <link href="css/bootstrap.united.min.css" rel="stylesheet">
+        <link href="css/site.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+    </head>
+
+<BODY BGCOLOR="#111111" TEXT="#FFFFFF">
+
+<SCRIPT LANGUAGE="JavaScript">
+
+   PI = 3.141592659;
+ 
+   function ana(f){
+
+      e0 = eval(f.er.value);
+      s0 = eval(f.s.value);
+      w0 = eval(f.w.value);
+      h0 = eval(f.h.value);
+      f0 = eval(f.f.value);
+
+      if (e0<=0 || f.er.value==""){
+          e0 = 2.6;
+          f.er.value = e0;
+      }
+      if (s0<=0 || f.s.value==""){
+          s0 = 1;
+          f.s.value = s0;
+      }
+      if (w0<=0 || f.w.value==""){
+          w0 = 0.5;
+          f.w.value = w0;
+      }
+      if (h0<=0 || f.h.value==""){
+          h0 = 0.6;
+          f.h.value = h0;
+      }
+      if (f0<=0 || f.f.value==""){
+          f0 = 1000;
+          f.f.value = f0;
+      }
+
+      a  = s0/2;
+      b  = a+w0;
+      k  = a/b;
+      kd = Math.sqrt(1-k*k);
+      sk = Math.sqrt(k);
+      skd= Math.sqrt(kd);
+
+      k1 = PI*a/(2*h0);
+      k2 = PI*b/(2*h0);
+      ex1= Math.exp(k1);
+      ex2= Math.exp(-k1);
+      ex3= Math.exp(k2);
+      ex4= Math.exp(-k2);
+      k1x= ((ex1-ex2)/2)/((ex3-ex4)/2);
+      k1y= Math.sqrt(1-k1x*k1x);
+      sk1= Math.sqrt(k1x);
+      sk1d=Math.sqrt(k1y);
+
+      if (k<0.7){
+          kk = 1/(Math.log(2*(1+skd)/(1-skd))/PI);
+      }
+      else{
+          kk = Math.log(2*(1+sk)/(1-sk))/PI;
+      }
+      if (k1x<0.7){
+          kk1 = 1/(Math.log(2*(1+sk1d)/(1-sk1d))/PI);
+      }
+      else{
+          kk1 = Math.log(2*(1+sk1)/(1-sk1))/PI;
+      }
+
+      ef = 1+(e0-1)/2*kk1/kk;
+      z  = 120*PI*kk/Math.sqrt(ef);
+       
+      f.Z0.value = z;    
+      f.eff.value = ef;    
+      kz = 1/Math.sqrt(ef);
+      f.kz.value = kz;
+      l4 = 30*1e10*kz/(f0*1e6*4);
+      f.l4.value = l4;
+
+   }
+
+   function syn(f){
+
+      e0 = eval(f.er.value);
+      s0 = eval(f.s.value);
+      h0 = eval(f.h.value);
+      f0 = eval(f.f.value);
+      z0 = eval(f.z.value);
+
+      if (e0<=0 || f.er.value==""){
+          e0 = 2.6;
+          f.er.value = e0;
+      }
+      if (s0<=0 || f.s.value==""){
+          s0 = 1;
+          f.s.value = s0;
+      }
+      if (h0<=0 || f.h.value==""){
+          h0 = 0.6;
+          f.h.value = h0;
+      }
+      if (f0<=0 || f.f.value==""){
+          f0 = 1000;
+          f.f.value = f0;
+      }
+      if (z0<=0 || f.z.value==""){
+          z0 = 50;
+          f.z.value = z0;
+      }
+
+      w0 = s0;
+      ww = s0*0.5;
+      if (z0<70){
+          ww=s0*10;
+      }     
+
+      ee = 1;
+      n  = 0;
+    
+    while (ee>0.001){
+
+      a  = s0/2;
+      b  = a+w0;
+      k  = a/b;
+      kd = Math.sqrt(1-k*k);
+      sk = Math.sqrt(k);
+      skd= Math.sqrt(kd);
+
+      k1 = PI*a/(2*h0);
+      k2 = PI*b/(2*h0);
+      ex1= Math.exp(k1);
+      ex2= Math.exp(-k1);
+      ex3= Math.exp(k2);
+      ex4= Math.exp(-k2);
+      k1x= ((ex1-ex2)/2)/((ex3-ex4)/2);
+      k1y= Math.sqrt(1-k1x*k1x);
+      sk1= Math.sqrt(k1x);
+      sk1d=Math.sqrt(k1y);
+
+      if (k<0.7){
+          kk = 1/(Math.log(2*(1+skd)/(1-skd))/PI);
+      }
+      else{
+          kk = Math.log(2*(1+sk)/(1-sk))/PI;
+      }
+      if (k1x<0.7){
+          kk1 = 1/(Math.log(2*(1+sk1d)/(1-sk1d))/PI);
+      }
+      else{
+          kk1 = Math.log(2*(1+sk1)/(1-sk1))/PI;
+      }
+
+      ef = 1+(e0-1)/2*kk1/kk;
+      z  = 120*PI*kk/Math.sqrt(ef);
+
+      err= z-z0;
+      ee = Math.abs(err);
+
+      if (n==0){
+           n = 1;
+           if (err<0){
+             frg= 0; 
+           }
+           else {
+             frg= 1;
+           }
+      }
+   
+      if (err<0){  
+           if (frg==0){
+              w0 = w0-ww;
+           }
+           else {
+              frg = 0;
+              ww = ww/2;
+           }
+      }
+      else {
+           if (frg==1){
+              w0 = w0+ww;
+           }
+           else {
+              frg = 1;
+              ww = ww/2;
+           }
+      }
+    }
+
+      f.ww.value = w0;      
+      f.eff.value = ef;    
+      kz = 1/Math.sqrt(ef);
+      f.kz.value = kz;
+      l4 = 30*1e10*kz/(f0*1e6*4);
+      f.l4.value = l4;
+
+   }
+
+</SCRIPT>
+
+        <div class="wrap">
+            <div class="nav-wrap" id="siteNavigation">
+                
+            </div>
+
+            <div class="container">
+
+<CENTER>
+<FONT SIZE="5" COLOR="#FF0000">Coplanar Strips Calculator</FONT><BR><BR>
+
+<FONT SIZE="3">
+<FORM METHOD="POST">
+<TABLE BODER=0>
+<TR>
+    <TD ROWSPAN="6"><IMG width="100%" SRC="images/cps.gif"></TD>
+</TR>
+<TR>
+    <TD WIDTH="35"></TD>
+    <TD ALIGN="center"><B> er</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="er"></TD>
+    <TD></TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>s</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="s"></TD>
+    <TD>[mm]</TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>h</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="h"></TD>
+    <TD>[mm]</TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>fo</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="f"></TD>
+    <TD>[MHz]</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><B>w</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="w"></TD>
+    <TD>[mm]</TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD><INPUT TYPE="button" VALUE=" Analyze  " onClick="ana(this.form)"></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="4" COLOR="#0000FF"><B>Zo</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="Z0"></TD>
+    <TD>[ohm]</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><B> Zo </B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="z"></TD>
+    <TD>[ohm]</TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD><INPUT TYPE="button" VALUE="Synthesis" onClick="syn(this.form)"></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="4" COLOR="#FF00FF"><B>w</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="ww"></TD>
+    <TD>[mm]</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="3" COLOR="#FF0000"><B>er eff </B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="eff"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="3" COLOR="#FF0000"><B>k </B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="kz"></TD>
+    <TD WIDTH="20"></TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD ALIGN="center"><FONT SIZE="3" COLOR="#FF0000"><B>lambda/4 </B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="l4"></TD>
+    <TD>[mm]</TD>
+</TR>
+</TABLE>
+</FORM>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR><TD><FONT SIZE="4"><B>[ How to use ]</B></FONT></TD></TR>
+<TR><TD>
+1. Input the parameter of the circuit board and center frequency.<BR>
+2.<BR>
+(1) When the characteristic impedance (Zo) of the line width (w) is calculated.<BR>
+Input w, and click on <FONT COLOR="#BB00FF"><B>[ Analyze ]</B></FONT> button.<BR>
+(2) When the line width (w) of the characteristic impedance (Zo) is calculated.<BR>
+Input Zo, and click on <FONT COLOR="#BB00FF"><B>[ Synthesis ]</B></FONT> button.<BR>
+3. A calculation result is indicated.<BR>
+</TD></TR>
+</TABLE>
+</FONT>
+</CENTER>
+    </div>
+
+    <footer class="footer gutter-lg-top">
+        <div class="container">
+            <a href="privacy-policy.html" class="pull-right gutter-md-left">Privacy Policy</a>
+            <span class="pull-right"> | </span>
+            <a href="https://github.com/ZalophusDokdo/xyzcontroller" target="_blank" class="pull-right gutter-md-right"><i class="fa fa-github gutter-sm-right"></i>Github</a>
+        </div>
+    </footer>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.bootstrap-autohidingnavbar.js"></script>
+<script type="text/javascript">
+    $(function(){
+        jQuery('#siteNavigation').load('navigation.html', function(){
+            jQuery("nav.navbar-fixed-top").autoHidingNavbar({animationDuration: 250, showOnUpscroll: true, showOnBottom: false});
+            setTimeout(function(){$("ul.navbar-right li:eq(1)").addClass('active');$('ul.transmission-line li:eq(5)').addClass('active');}, 100);
+        });
+    });
+</script>
+</BODY>
+
+</HTML>

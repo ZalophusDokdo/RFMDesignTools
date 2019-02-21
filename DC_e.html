@@ -1,0 +1,158 @@
+<HTML>
+
+<!-------------------------------->
+<!     Designed by Y.Ichikawa     >
+<!         Augst 10, 2004         >
+<!   Modified by Zalophus Dokdo   >
+<!       February 12, 2019        >
+<!-------------------------------->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <title>RF & Microwave Design Tools | Directionl Coupler Calculator</title>
+        <meta name="description" content="RF & Microwave Design Tools Compact android mobile application">
+        <link href="css/bootstrap.united.min.css" rel="stylesheet">
+        <link href="css/site.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+    </head>
+
+<BODY BGCOLOR="#111111" TEXT="#FFFFFF">
+
+<SCRIPT LANGUAGE="JavaScript">
+
+   PI = 3.141592659;
+ 
+   function ana(f){
+
+      cf0 = eval(f.cf.value);
+      z0 = eval(f.z.value);
+      f0 = eval(f.f.value);
+
+      if (cf0>-15 || f.cf.value==""){
+          cf0 = -15;
+          f.cf.value = cf0;
+      }
+      if (z0<=0 || f.z.value==""){
+          z0 = 50;
+          f.z.value = z0;
+      }
+      if (f0<=0 || f.f.value==""){
+          f0 = 1000;
+          f.f.value = f0;
+      }
+
+      k0 = 2*PI*f0;
+      l0 = z0*1000/k0;
+      c0 = 1e6/(k0*z0);
+      cc = Math.pow(10,cf0/20)*c0;
+       
+      f.L.value = l0;    
+      f.C.value = c0;    
+      f.Cx.value = cc;
+
+   }
+
+</SCRIPT>
+
+        <div class="wrap">
+            <div class="nav-wrap" id="siteNavigation">
+                
+            </div>
+
+            <div class="container">
+
+<CENTER>
+<FONT SIZE="5" COLOR="#FF0000">Directional Coupler Calculator</FONT><BR><BR>
+
+<FONT SIZE="3">
+<FORM METHOD="POST">
+<TABLE BODER=0>
+<TR>
+    <TD ROWSPAN="3"><IMG width="100%" SRC="images/dc.gif"></TD>
+    <TD WIDTH=10></TD>
+    <TD ALIGN="center"><B>Cf</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="cf"></TD>
+    <TD>[dB]</TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>Zo</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="z"></TD>
+    <TD>[ohm]</TD>
+</TR>
+<TR>
+    <TD></TD>
+    <TD ALIGN="center"><B>fo</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="f"></TD>
+    <TD>[MHz]</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR>
+    <TD ROWSPAN="3" ALIGN="middle"><INPUT TYPE="button" VALUE=" Calculate  " onClick="ana(this.form)"></TD>
+</TR>
+</TABLE>
+<BR>
+<TABLE BORDER=0>
+<TR>
+    <TD><FONT SIZE="4" COLOR="#FF00FF"><B>L</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="L"></TD>
+    <TD>[nH]</TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD><FONT SIZE="4" COLOR="#FF00FF"><B>C</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="C"></TD>
+    <TD>[pF]</TD>
+</TR>
+<TR><TD HEIGHT=10></TD><TD></TD><TD></TD></TR>
+<TR>
+    <TD><FONT SIZE="4" COLOR="#FF00FF"><B>Cc</B></FONT></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="Cx"></TD>
+    <TD>[pF]</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+</FORM>
+<TABLE BORDER=0>
+<TR><TD><FONT SIZE="4"><B>[ How to use ]</B></FONT></TD></TR>
+<TR><TD>
+1. Input coupling factor(Cf<-15), Zo, fo, and click on <FONT COLOR="#BB00FF"><B>[ Calculate ]</B></FONT> button.<BR>
+2. A calculation result is indicated.<BR>
+</TD></TR>
+</TABLE>
+</FONT>
+</CENTER>
+    </div>
+
+    <footer class="footer gutter-lg-top">
+        <div class="container">
+            <a href="privacy-policy.html" class="pull-right gutter-md-left">Privacy Policy</a>
+            <span class="pull-right"> | </span>
+            <a href="https://github.com/ZalophusDokdo/xyzcontroller" target="_blank" class="pull-right gutter-md-right"><i class="fa fa-github gutter-sm-right"></i>Github</a>
+        </div>
+    </footer>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.bootstrap-autohidingnavbar.js"></script>
+<script type="text/javascript">
+    $(function(){
+        jQuery('#siteNavigation').load('navigation.html', function(){
+            jQuery("nav.navbar-fixed-top").autoHidingNavbar({animationDuration: 250, showOnUpscroll: true, showOnBottom: false});
+            setTimeout(function(){$("li.etc").addClass('active'); $('li.etc li:eq(3)').addClass('active');}, 100);
+        });
+    });
+</script>
+</BODY>
+
+</HTML>

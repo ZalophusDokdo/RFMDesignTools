@@ -1,0 +1,247 @@
+<HTML>
+
+<!-------------------------------->
+<!     Designed by Y.Ichikawa     >
+<!         Augst 10, 2004         >
+<!   Modified by Zalophus Dokdo   >
+<!       February 12, 2019        >
+<!-------------------------------->
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <title>RF & Microwave Design Tools | 5-section Distributed LPF</title>
+        <meta name="description" content="RF & Microwave Design Tools Compact android mobile application">
+        <link href="css/bootstrap.united.min.css" rel="stylesheet">
+        <link href="css/site.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+    </head>
+
+<BODY BGCOLOR="#111111" TEXT="#FFFFFF">
+
+<SCRIPT LANGUAGE="JavaScript">
+
+   function MakeArray(j){
+      this.length = j;
+      var i;
+      for(i=1; i<=j; i++)
+         this[i] = "";
+   }
+
+   function cal(f){
+    
+      var i;
+ 
+      z = eval(f.z.value);
+      z1 = eval(f.z1.value);
+      z2 = eval(f.z2.value);
+      r = eval(f.r.value);
+
+      if (z<=0 || f.z.value==""){
+          z = 50;
+          f.z.value = z;
+      }
+      if (z1<=5 || f.z1.value==""){
+          z1 = 5;
+          f.z1.value = z1;
+      }
+      if (z1>=30){
+          z1 = 30;
+          f.z1.value = z1;
+      }
+      if (z2<=80 || f.z2.value==""){
+          z2 = 80;
+          f.z2.value = z2;
+      }
+      if (z2>=300){
+          z2 = 300;
+          f.z2.value = z2;
+      }
+
+      if (r<0.01 || f.r.value==""){
+          r = 0.01;
+          f.r.value = r;
+      }
+
+      var g = new MakeArray(10);
+      var x = new MakeArray(10);
+
+      g[1] = 0.618;
+      g[2] = 1.618;
+      g[3] = 2.000;
+
+      x[1] = Math.asin(g[1]*z1/z)*180/Math.PI;
+      x[2] = Math.asin(g[2]*z/z2)*180/Math.PI;
+      x[3] = Math.asin(g[3]*z1/z)*180/Math.PI;
+         
+      f.x1.value = x[1];
+      f.x2.value = x[2];
+      f.x3.value = x[3];
+
+      rr = r/17.37;
+      e2x = Math.exp(2*rr);
+      coth = (e2x+1)/(e2x-1);
+      bt = Math.log(coth);
+      btn = bt/(2*5);
+      gn = (Math.exp(btn)-Math.exp(-btn))/2;
+ 
+      var a = new MakeArray(10);
+      var b = new MakeArray(10);
+      var y = new MakeArray(10);
+
+      for(i=1; i<=5; i++){
+         k = (2*i-1)*Math.PI/(2*5);
+         a[i] = Math.sin(k);
+         k2 = Math.PI*i/5;
+         k3 = Math.sin(k2);
+         b[i] = Math.pow(gn,2)+Math.pow(k3,2);
+      }
+
+      g[1] = 2*a[1]/gn;
+
+      for(i=2; i<=5; i++){
+         g[i] = (4*a[i-1]*a[i])/(b[i-1]*g[i-1]);
+      }
+
+      y[1] = Math.asin(g[1]*z1/z)*180/Math.PI;
+      y[2] = Math.asin(g[2]*z/z2)*180/Math.PI;
+      y[3] = Math.asin(g[3]*z1/z)*180/Math.PI;
+         
+      f.y1.value = y[1];
+      f.y2.value = y[2];
+      f.y3.value = y[3];
+  
+   }
+
+</SCRIPT>
+
+        <div class="wrap">
+            <div class="nav-wrap" id="siteNavigation">
+                
+            </div>
+
+            <div class="container">
+
+<CENTER>
+<FONT SIZE="5" COLOR="#FF0000">5-section Distributed LPF Calculator</FONT><BR><BR>
+<IMG width="100%" SRC="images/D5_LPF.gif"><BR><BR><BR>
+
+<FONT SIZE="3">
+<FORM METHOD="POST">
+<TABLE BORDER=0>
+<TR>
+    <TD><B>Zo</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="z"></TD>
+    <TD>[ohm]</TD>
+</TR>
+<TR>
+    <TD><B>Z1</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="z1"></TD>
+    <TD>[ohm]</TD>
+</TR>
+<TR>
+    <TD><B>Z2</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="z2"></TD>
+    <TD>[ohm]</TD>
+</TR>
+<TR>
+    <TD><B>ripple</B></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="r"></TD>
+    <TD>[dB]</TD>
+</TR>
+</TABLE>
+<BR>
+<TABLE BODER=0>
+<TR>
+    <TD ALIGN="center"><INPUT TYPE="button" VALUE=" Calculate  " onClick="cal(this.form)"></TD>
+</TR>
+</TABLE>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BODER=0>
+<TR>
+    <TD><FONT SIZE="4" COLOR="00CCFF">Maximally Flat</FONT></TD>
+</TR>
+</TABLE>
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><B>th1</B></TD>
+    <TD></TD>
+    <TD ALIGN="center"><B>th2</B></TD>
+    <TD></TD>
+    <TD ALIGN="center"><B>th3</B></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x1"></TD>
+    <TD></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x2"></TD>
+    <TD></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="x3"></TD>
+</TR>
+</TABLE>
+<BR>
+<TABLE BORDER=0>
+<TR>
+    <TD><FONT SIZE="4" COLOR="CC00FF">Chebyshev</FONT></TD> 
+</TR>
+</TABLE>
+<TABLE BORDER=0>
+<TR>
+    <TD ALIGN="center"><B>th1</B></TD>
+    <TD></TD>
+    <TD ALIGN="center"><B>th2</B></TD>
+    <TD></TD>
+    <TD ALIGN="center"><B>th3</B></TD>
+</TR>
+<TR>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y1"></TD>
+    <TD></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y2"></TD>
+    <TD></TD>
+    <TD><INPUT TYPE="text" SIZE=5 NAME="y3"></TD>
+</TR>
+</TABLE>
+</FORM>
+
+<HR ALIGN="CENTER" width="100%">
+
+<TABLE BORDER=0>
+<TR><TD><FONT SIZE="4"><B>[ How to use ]</B></FONT></TD></TR>
+<TR><TD>
+1. Input characteristic impedance (Zo), impedance (Z1, Z2), ripple,<BR>
+and click on <FONT COLOR="#BB00FF"><B>[ Calculate ]</B></FONT> button.<BR><BR>
+2. A calculation result is indicated.<BR><BR>
+<FONT COLOR="#FF00FF"><B>[ Note ]</B></FONT>A limitation is set up in the value of Z1, Z2. Z1:5~30, Z2:80~300<BR>
+</TD></TR>
+</TABLE>
+
+</FONT>
+</CENTER>
+    </div>
+
+    <footer class="footer gutter-lg-top">
+        <div class="container">
+            <a href="privacy-policy.html" class="pull-right gutter-md-left">Privacy Policy</a>
+            <span class="pull-right"> | </span>
+            <a href="https://github.com/ZalophusDokdo/xyzcontroller" target="_blank" class="pull-right gutter-md-right"><i class="fa fa-github gutter-sm-right"></i>Github</a>
+        </div>
+    </footer>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.bootstrap-autohidingnavbar.js"></script>
+<script type="text/javascript">
+    $(function(){
+        jQuery('#siteNavigation').load('navigation.html', function(){
+            jQuery("nav.navbar-fixed-top").autoHidingNavbar({animationDuration: 250, showOnUpscroll: true, showOnBottom: false});
+            setTimeout(function(){$("li.lpf").addClass('active'); $('li.lpf li:eq(2)').addClass('active');}, 100);
+        });
+    });
+</script>
+</BODY>
+
+</HTML>
